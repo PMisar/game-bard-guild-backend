@@ -1,3 +1,4 @@
+// config/index.js
 // We reuse this import in order to have access to the `body` property in requests
 const express = require("express");
 
@@ -9,7 +10,7 @@ const logger = require("morgan");
 // https://www.npmjs.com/package/cookie-parser
 const cookieParser = require("cookie-parser");
 
-const cors = require("cors"); // <== IMPORT
+const cors = require("cors");
 
 // Middleware configuration
 module.exports = (app) => {
