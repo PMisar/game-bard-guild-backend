@@ -1,0 +1,1 @@
+// routes/news.routes.js
