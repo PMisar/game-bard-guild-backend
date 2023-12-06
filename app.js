@@ -16,9 +16,6 @@ app.use("/api", allRoutes);
 const articleRouter = require("./routes/article.routes");
 app.use("/api", isAuthenticated, articleRouter);
 
-// const taskRouter = require("./routes/task.routes");
-// app.use("/api", isAuthenticated, taskRouter);
-
 const authRouter = require("./routes/auth.routes");
 app.use("/auth", authRouter);
 
