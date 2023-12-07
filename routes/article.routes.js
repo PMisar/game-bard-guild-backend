@@ -18,7 +18,7 @@ router.post("/articles", isAuthenticated, (req, res, next) => {
 // GET /api/articles - Retrieves all articles
 router.get("/articles", (req, res, next) => {
   Article.find()
-    .populate("user", "name") 
+    .populate("user", "name")
     .populate({
       path: "comments",
       populate: { path: "userId", select: "name" },

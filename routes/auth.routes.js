@@ -6,6 +6,7 @@ const User = require("../models/User.model");
 const router = express.Router();
 const { isAuthenticated } = require("./../middleware/jwt.middleware.js");
 
+
 const saltRounds = 10;
  
 router.post('/signup', (req, res, next) => {

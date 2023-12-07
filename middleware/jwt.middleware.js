@@ -23,7 +23,6 @@ function getTokenFromHeaders (req) {
   return null;
 }
  
- 
 // Export the middleware so that we can use it to create a protected routes
 module.exports = {
   isAuthenticated
