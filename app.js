@@ -18,8 +18,14 @@ app.use("/api", isAuthenticated, articleRouter);
 const commentRouter = require("./routes/comment.routes");
 app.use("/api", isAuthenticated, commentRouter);
 
-// const likeRouter = require("./routes/like.routes");
-// app.use("/api", isAuthenticated, likeRouter);
+const favoriteArticlesRouter = require("./routes/favoriteArticles.routes");
+app.use("/api", isAuthenticated, favoriteArticlesRouter);
+
+const reviewsRouter = require("./routes/reviews.routes");
+app.use("/api", isAuthenticated, reviewsRouter);
+
+// const newsRouter = require("./routes/news.routes");
+// app.use("/api", newsRouter);
 
 const authRouter = require("./routes/auth.routes");
 app.use("/auth", authRouter);

@@ -36,7 +36,7 @@ router.get("/comments/:commentId", (req, res, next) => {
   }
 
   Comment.findById(commentId)
-    .populate("userId", "name")
+    .populate("userId")
     .then((comment) => res.status(200).json(comment))
     .catch((error) => res.status(500).json(error));
 });

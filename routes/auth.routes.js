@@ -113,5 +113,25 @@ router.get('/verify', isAuthenticated, (req, res, next) => {
   res.status(200).json(req.payload);
 });
 
+// DELETE /auth/delete
+router.delete('/delete', isAuthenticated, (req, res, next) => {
+  const userId = req.payload._id;
+
+  // Delete the user by their ID
+  User.findByIdAndDelete(userId)
+    .then((deletedUser) => {
+      if (!deletedUser) {
+        res.status(404).json({ message: "User not found." });
+        return;
+      }
+      // Optionally, you may want to perform additional cleanup or logging here
+      res.status(200).json({ message: "User deleted successfully." });
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).json({ message: "Internal Server Error" });
+    });
+});
+
 module.exports = router;
 

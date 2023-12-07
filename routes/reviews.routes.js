@@ -1,20 +1,35 @@
 // routes/reviews.routes.js
-// const express = require("express");
-// const axios = require("axios");
-
-// const router = express.Router();
-
-// router.get("/game-reviews", async (req, res) => {
-//   try {
-//     const apiKey = "YOUR_API_KEY"; // Replace with your actual API key
-//     const apiUrl = "https://api.example.com/game-reviews";
-//     const response = await axios.get(apiUrl, { headers: { "Api-Key": apiKey } });
-//     const reviews = response.data; // Adjust based on the actual structure of the API response
-//     res.json(reviews);
-//   } catch (error) {
-//     console.error("Error fetching game reviews:", error.message);
-//     res.status(500).json({ error: "Internal Server Error" });
-//   }
-// });
-
-// module.exports = router;
+  const express = require("express");
+  const axios = require("axios");
+  const { isAuthenticated } = require("../middleware/jwt.middleware");
+  require("dotenv").config();
+  
+  const router = express.Router();
+  
+  router.get("/reviews", isAuthenticated, async (req, res) => {
+    try {
+      const options = {
+        method: 'GET',
+        url: 'https://opencritic-api.p.rapidapi.com/reviews/game/463',
+        params: {
+          skip: '20',
+          sort: 'popularity'
+        },
+        headers: {
+          'X-RapidAPI-Key': process.env.RAPIDAPI_KEY,
+          'X-RapidAPI-Host': 'opencritic-api.p.rapidapi.com'
+        }
+      };
+  
+      const response = await axios.request(options);
+      const reviews = response.data;
+  
+      res.json(reviews);
+    } catch (error) {
+      console.error("Error fetching game reviews:", error.message);
+      res.status(500).json({ error: "Internal Server Error" });
+    }
+  });
+  
+  module.exports = router;
+  

@@ -78,4 +78,36 @@ router.delete("/articles/:articleId", isAuthenticated, (req, res, next) => {
     .catch((error) => res.json(error));
 });
 
+// LIKES, UNLIKES TEST CODE
+router.put('/articles/:articleId/like', isAuthenticated, (req, res) => {
+  const { articleId } = req.params;
+  Article.findByIdAndUpdate(
+    articleId,
+    { $push: { likes: req.payload._id } },
+    { new: true }
+  )
+    .exec((err, result) => {
+      if (err) {
+        return res.status(422).json({ error: err });
+      } else {
+        res.json(result);
+      }
+    });
+});
+
+router.put('/articles/:articleId/unlike', isAuthenticated, (req, res) => {
+  Article.findByIdAndUpdate(
+    req.body.articleId,
+    { $pull: { likes: req.payload._id } },
+    { new: true }
+  )
+    .exec((err, result) => {
+      if (err) {
+        return res.status(422).json({ error: err });
+      } else {
+        res.json(result);
+      }
+    });
+});
+
 module.exports = router;
