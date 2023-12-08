@@ -1,4 +1,5 @@
-//app.js
+// app.js
+
 require("dotenv/config");
 require("./db");
 const express = require("express");
@@ -23,6 +24,9 @@ app.use("/api", isAuthenticated, favoriteArticlesRouter);
 
 const reviewsRouter = require("./routes/reviews.routes");
 app.use("/api", isAuthenticated, reviewsRouter);
+
+const profileRouter = require("./routes/profile.routes");
+app.use("/api", isAuthenticated, profileRouter);
 
 // const newsRouter = require("./routes/news.routes");
 // app.use("/api", newsRouter);

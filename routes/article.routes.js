@@ -1,4 +1,5 @@
 // models/article.routes.js
+
 const express = require("express");
 const router = express.Router();
 const mongoose = require("mongoose");
@@ -78,7 +79,7 @@ router.delete("/articles/:articleId", isAuthenticated, (req, res, next) => {
     .catch((error) => res.json(error));
 });
 
-// LIKES, UNLIKES TEST CODE
+// LIKES, UNLIKES
 router.put('/articles/:articleId/like', isAuthenticated, (req, res) => {
   const { articleId } = req.params;
   Article.findByIdAndUpdate(

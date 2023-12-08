@@ -1,4 +1,5 @@
 // routes/index.js
+
 const router = require("express").Router();
 
 router.get("/", (req, res, next) => {
