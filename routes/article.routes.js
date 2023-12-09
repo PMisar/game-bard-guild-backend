@@ -28,6 +28,19 @@ router.get("/articles", (req, res, next) => {
     .catch((err) => res.json(err));
 });
 
+// router.get("/articles", isAuthenticated, (req, res, next) => {
+//   const userId = req.payload._id;
+
+//   Article.find({ user: userId })
+//     .populate("user", "name")
+//     .populate({
+//       path: "comments",
+//       populate: { path: "userId", select: "name" },
+//     })
+//     .then((userArticles) => res.json(userArticles))
+//     .catch((err) => res.json(err));
+// });
+
 // GET /api/articles/:articleId - Retrieves a specific article by id
 router.get("/articles/:articleId", (req, res, next) => {
   const { articleId } = req.params;
@@ -96,19 +109,34 @@ router.put('/articles/:articleId/like', isAuthenticated, (req, res) => {
     });
 });
 
-router.put('/articles/:articleId/unlike', isAuthenticated, (req, res) => {
+// router.put('/articles/:articleId/unlike', isAuthenticated, (req, res) => {
+//   Article.findByIdAndUpdate(
+//     req.body.articleId,
+//     { $pull: { likes: req.payload._id } },
+//     { new: true }
+//   )
+//     .exec((err, result) => {
+//       if (err) {
+//         return res.status(422).json({ error: err });
+//       } else {
+//         res.json(result);
+//       }
+//     });
+// });
+router.delete("/articles/:articleId/unlike", isAuthenticated, (req, res, next) => {
+  const { articleId } = req.params;
+  const userId = req.payload._id;
+
   Article.findByIdAndUpdate(
-    req.body.articleId,
-    { $pull: { likes: req.payload._id } },
+    articleId,
+    { $pull: { likes: userId } },
     { new: true }
   )
-    .exec((err, result) => {
-      if (err) {
-        return res.status(422).json({ error: err });
-      } else {
-        res.json(result);
-      }
-    });
+  .then((updatedArticle) => {
+    console.log(`Article removed from likes.`);
+    res.json(updatedArticle);
+  })
+  .catch((error) => res.status(500).json(error));
 });
 
 module.exports = router;
