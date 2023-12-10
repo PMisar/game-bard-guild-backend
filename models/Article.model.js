@@ -12,7 +12,6 @@ const articleSchema = new Schema({
   comments: [{ type: Schema.Types.ObjectId, ref: "Comment" }],
   favorites: [{ type: Schema.Types.ObjectId, ref: "User" }],
   likes: [{ type: Schema.Types.ObjectId, ref: "User" }],
-  // likes: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
 }, { timestamps: true });
 
 module.exports = model("Article", articleSchema);
