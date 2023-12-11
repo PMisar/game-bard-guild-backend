@@ -17,7 +17,8 @@ router.post("/articles", isAuthenticated, (req, res, next) => {
 });
 
 // GET /api/articles - Retrieves all articles
-router.get("/articles", (req, res, next) => {
+router.get("/articles", isAuthenticated, (req, res, next) => {
+
   Article.find()
     .populate("user", "name")
     .populate({
@@ -109,22 +110,9 @@ router.put('/articles/:articleId/like', isAuthenticated, (req, res) => {
     });
 });
 
-// router.put('/articles/:articleId/unlike', isAuthenticated, (req, res) => {
-//   Article.findByIdAndUpdate(
-//     req.body.articleId,
-//     { $pull: { likes: req.payload._id } },
-//     { new: true }
-//   )
-//     .exec((err, result) => {
-//       if (err) {
-//         return res.status(422).json({ error: err });
-//       } else {
-//         res.json(result);
-//       }
-//     });
-// });
 router.delete("/articles/:articleId/unlike", isAuthenticated, (req, res, next) => {
   const { articleId } = req.params;
+  console.log(articleId)
   const userId = req.payload._id;
 
   Article.findByIdAndUpdate(
@@ -132,11 +120,11 @@ router.delete("/articles/:articleId/unlike", isAuthenticated, (req, res, next) =
     { $pull: { likes: userId } },
     { new: true }
   )
-  .then((updatedArticle) => {
-    console.log(`Article removed from likes.`);
-    res.json(updatedArticle);
-  })
-  .catch((error) => res.status(500).json(error));
+    .then((updatedArticle) => {
+      console.log(`Article removed from likes.`);
+      res.json(updatedArticle);
+    })
+    .catch((error) => res.status(500).json(error));
 });
 
 module.exports = router;
