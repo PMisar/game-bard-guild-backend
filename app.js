@@ -28,9 +28,6 @@ app.use("/api", isAuthenticated, reviewsRouter);
 const profileRouter = require("./routes/profile.routes");
 app.use("/api", isAuthenticated, profileRouter);
 
-// const newsRouter = require("./routes/news.routes");
-// app.use("/api", newsRouter);
-
 const authRouter = require("./routes/auth.routes");
 app.use("/auth", authRouter);
 
