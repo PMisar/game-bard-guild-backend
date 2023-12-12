@@ -19,7 +19,7 @@ const fileUploader = require('../config/cloudinary.config');
 
 // ADDING IMAGE TEST CODE
 // POST /api/articles - Creates a new article
-router.post("/articles", isAuthenticated, fileUploader.single('movie-cover-image'), (req, res, next) => {
+router.post("/articles", isAuthenticated, fileUploader.single('game-image'), (req, res, next) => {
   const { title, description, tags, } = req.body;
   const userId = req.payload._id;
 
