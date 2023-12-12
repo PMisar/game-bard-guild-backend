@@ -5,13 +5,25 @@ const router = express.Router();
 const mongoose = require("mongoose");
 const Article = require("../models/Article.model");
 const { isAuthenticated } = require("../middleware/jwt.middleware");
+const fileUploader = require('../config/cloudinary.config');
+// OLD CODE
+// // POST /api/articles - Creates a new article
+// router.post("/articles", isAuthenticated, (req, res, next) => {
+//   const { title, description, tags, image } = req.body;
+//   const userId = req.payload._id;
 
+//   Article.create({ title, description, tags, image, user: userId })
+//     .then((response) => res.json(response))
+//     .catch((err) => res.json(err));
+// });
+
+// ADDING IMAGE TEST CODE
 // POST /api/articles - Creates a new article
-router.post("/articles", isAuthenticated, (req, res, next) => {
-  const { title, description, tags, image } = req.body;
+router.post("/articles", isAuthenticated, fileUploader.single('movie-cover-image'), (req, res, next) => {
+  const { title, description, tags, } = req.body;
   const userId = req.payload._id;
 
-  Article.create({ title, description, tags, image, user: userId })
+  Article.create({ title, description, tags, imageUrl: req.file.path, user: userId })
     .then((response) => res.json(response))
     .catch((err) => res.json(err));
 });
