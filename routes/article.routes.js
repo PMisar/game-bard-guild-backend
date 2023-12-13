@@ -6,18 +6,7 @@ const mongoose = require("mongoose");
 const Article = require("../models/Article.model");
 const { isAuthenticated } = require("../middleware/jwt.middleware");
 const fileUploader = require('../config/cloudinary.config');
-// OLD CODE
-// // POST /api/articles - Creates a new article
-// router.post("/articles", isAuthenticated, (req, res, next) => {
-//   const { title, description, tags, image } = req.body;
-//   const userId = req.payload._id;
 
-//   Article.create({ title, description, tags, image, user: userId })
-//     .then((response) => res.json(response))
-//     .catch((err) => res.json(err));
-// });
-
-// ADDING IMAGE TEST CODE
 // POST /api/articles - Creates a new article
 router.post("/articles", isAuthenticated, fileUploader.single('image'), (req, res) => {
   const { title, description, tags, } = req.body;
@@ -44,19 +33,6 @@ router.get("/articles", isAuthenticated, (req, res, next) => {
     })
     .catch((err) => res.json(err));
 });
-
-// router.get("/articles", isAuthenticated, (req, res, next) => {
-//   const userId = req.payload._id;
-
-//   Article.find({ user: userId })
-//     .populate("user", "name")
-//     .populate({
-//       path: "comments",
-//       populate: { path: "userId", select: "name" },
-//     })
-//     .then((userArticles) => res.json(userArticles))
-//     .catch((err) => res.json(err));
-// });
 
 // GET /api/articles/:articleId - Retrieves a specific article by id
 router.get("/articles/:articleId", (req, res, next) => {
