@@ -14,7 +14,10 @@ router.post("/articles/:articleId/comments", isAuthenticated, (req, res, next) =
 
   Comment.create({ comment, userId, articleId })
     .then((response) => res.status(201).json(response))
-    .catch((err) => res.status(500).json(err));
+    .catch((err) => {
+      console.log(err)
+      res.status(500).json(err)
+    });
 });
 
 // GET /api/articles/:articleId/comments - Retrieves all comments for a specific article
@@ -24,7 +27,10 @@ router.get("/articles/:articleId/comments", (req, res, next) => {
   Comment.find({ articleId })
     .populate("userId", "name")
     .then((articleComments) => res.status(200).json(articleComments))
-    .catch((err) => res.status(500).json(err));
+    .catch((err) => {
+      console.log(err)
+      res.status(500).json(err)
+    });
 });
 
 // GET /api/comments/:commentId - Retrieves a specific comment by ID

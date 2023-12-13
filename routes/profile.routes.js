@@ -60,7 +60,7 @@ next(error);
 // Route to delete the authenticated user
 router.delete("/profile", isAuthenticated, async (req, res, next) => {
   try {
-    const userId = req.user.id;
+    const userId = req.payload;
 
     const deletedUser = await User.findByIdAndDelete(userId);
 

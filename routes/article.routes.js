@@ -19,8 +19,9 @@ const fileUploader = require('../config/cloudinary.config');
 
 // ADDING IMAGE TEST CODE
 // POST /api/articles - Creates a new article
-router.post("/articles", isAuthenticated, fileUploader.single('game-image'), (req, res, next) => {
+router.post("/articles", isAuthenticated, fileUploader.single('image'), (req, res) => {
   const { title, description, tags, } = req.body;
+
   const userId = req.payload._id;
 
   Article.create({ title, description, tags, imageUrl: req.file.path, user: userId })
@@ -32,12 +33,15 @@ router.post("/articles", isAuthenticated, fileUploader.single('game-image'), (re
 router.get("/articles", isAuthenticated, (req, res, next) => {
 
   Article.find()
+    .sort({ createdAt: -1 })
     .populate("user", "name")
     .populate({
       path: "comments",
       populate: { path: "userId", select: "name" },
     })
-    .then((allArticles) => res.json(allArticles))
+    .then((allArticles) => {
+      res.json(allArticles)
+    })
     .catch((err) => res.json(err));
 });
 
@@ -76,6 +80,13 @@ router.get("/articles/:articleId", (req, res, next) => {
 // PUT /api/articles/:articleId - Updates a specific article by id
 router.put("/articles/:articleId", isAuthenticated, (req, res, next) => {
   const { articleId } = req.params;
+
+  let imageUrl;
+  if (req.file) {
+    imageUrl = req.file.path;
+  } else {
+    imageUrl = existingImage;
+  }
 
   if (!mongoose.Types.ObjectId.isValid(articleId)) {
     res.status(400).json({ message: "Specified id is not valid" });

@@ -111,6 +111,7 @@ router.delete('/delete', isAuthenticated, (req, res, next) => {
         return;
       }
       res.status(200).json({ message: "User deleted successfully." });
+      res.redirect("/");
     })
     .catch((err) => {
       console.error(err);
