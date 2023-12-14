@@ -57,21 +57,22 @@ router.get("/articles/:articleId", (req, res, next) => {
 router.put("/articles/:articleId", isAuthenticated, (req, res, next) => {
   const { articleId } = req.params;
 
-  let imageUrl;
-  if (req.file) {
-    imageUrl = req.file.path;
-  } else {
-    imageUrl = existingImage;
-  }
+  Article.findById(articleId)
+    .then((existingArticle) => {
+      if (!existingArticle) {
+        res.status(404).json({ message: "Article not found" });
+        return;
+      }
 
-  if (!mongoose.Types.ObjectId.isValid(articleId)) {
-    res.status(400).json({ message: "Specified id is not valid" });
-    return;
-  }
+      // Use the existing imageUrl if available; otherwise, use the new one
+      const imageUrl = existingArticle.imageUrl || (req.file && req.file.path);
 
-  Article.findByIdAndUpdate(articleId, req.body, { new: true })
-    .then((updatedArticle) => res.json(updatedArticle))
-    .catch((error) => res.json(error));
+      // Update the article with the new data
+      Article.findByIdAndUpdate(articleId, { ...req.body, imageUrl }, { new: true })
+        .then((updatedArticle) => res.json(updatedArticle))
+        .catch((error) => res.status(500).json(error));
+    })
+    .catch((error) => res.status(500).json(error));
 });
 
 // DELETE /api/articles/:articleId - Deletes a specific article by id
@@ -109,9 +110,8 @@ router.put('/articles/:articleId/like', isAuthenticated, (req, res) => {
     });
 });
 
-router.delete("/articles/:articleId/unlike", isAuthenticated, (req, res, next) => {
+router.put("/articles/:articleId/unlike", isAuthenticated, (req, res, next) => {
   const { articleId } = req.params;
-  console.log(articleId)
   const userId = req.payload._id;
 
   Article.findByIdAndUpdate(
