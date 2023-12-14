@@ -1,4 +1,4 @@
-//app.js
+// app.js
 
 require("dotenv/config");
 require("./db");
@@ -16,8 +16,17 @@ app.use("/api", allRoutes);
 const articleRouter = require("./routes/article.routes");
 app.use("/api", isAuthenticated, articleRouter);
 
-// const taskRouter = require("./routes/task.routes");
-// app.use("/api", isAuthenticated, taskRouter);
+const commentRouter = require("./routes/comment.routes");
+app.use("/api", isAuthenticated, commentRouter);
+
+const favoriteArticlesRouter = require("./routes/favoriteArticles.routes");
+app.use("/api", isAuthenticated, favoriteArticlesRouter);
+
+const reviewsRouter = require("./routes/reviews.routes");
+app.use("/api", isAuthenticated, reviewsRouter);
+
+const profileRouter = require("./routes/profile.routes");
+app.use("/api", isAuthenticated, profileRouter);
 
 const authRouter = require("./routes/auth.routes");
 app.use("/auth", authRouter);
