@@ -17,7 +17,6 @@ router.post("/articles/:articleId/favorite", isAuthenticated, (req, res) => {
     { new: true }
   )
     .then((updatedArticle) => {
-        console.log(`Article added to favorites.`)
         res.json(updatedArticle);
     })
     .catch((error) => res.status(500).json(error));
@@ -34,7 +33,6 @@ router.delete("/articles/:articleId/favorite", isAuthenticated, (req, res) => {
     { new: true }
   )
   .then((updatedArticle) => {
-    console.log(`Article removed from favorites.`);
     res.json(updatedArticle);
   })
   .catch((error) => res.status(500).json(error));

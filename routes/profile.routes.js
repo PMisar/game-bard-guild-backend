@@ -9,7 +9,6 @@ const Article = require("../models/Article.model");
 // Route to get user profile information, including profile picture
 router.get("/profile", isAuthenticated, async (req, res, next) => {
   try {
-    console.log(req.payload)
     // USER SAVED IN PAYLOAD!
     const userId = req.payload._id;
 
@@ -26,36 +25,23 @@ router.get("/profile", isAuthenticated, async (req, res, next) => {
         populate: { path: "userId", select: "name" },
       });
 
-//     res.status(200).json({
-//       _id: user._id,
-//       email: user.email,
-//       name: user.name,
-//       profilePicture: user.profilePicture,
-//       articles: userArticles,
-//     });
-//   } catch (error) {
-//     next(error);
-//   }
-// });
+    const responseData = {
+      _id: user._id,
+      email: user.email,
+      name: user.name,
+      profilePicture: user.profilePicture,
+      articles: userArticles,
+    };
 
-const responseData = {
-  _id: user._id,
-  email: user.email,
-  name: user.name,
-  profilePicture: user.profilePicture,
-  articles: userArticles,
-};
+    if (user.createdAt) {
+      responseData.createdAt = user.createdAt;
+    }
 
-if (user.createdAt) {
-  responseData.createdAt = user.createdAt;
-}
-
-res.status(200).json(responseData);
-} catch (error) {
-next(error);
-}
+    res.status(200).json(responseData);
+  } catch (error) {
+    next(error);
+  }
 });
-
 
 // Route to delete the authenticated user
 router.delete("/profile", isAuthenticated, async (req, res, next) => {

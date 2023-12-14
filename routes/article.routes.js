@@ -64,7 +64,6 @@ router.put("/articles/:articleId", isAuthenticated, (req, res, next) => {
         return;
       }
 
-      // Use the existing imageUrl if available; otherwise, use the new one
       const imageUrl = existingArticle.imageUrl || (req.file && req.file.path);
 
       // Update the article with the new data
@@ -120,7 +119,6 @@ router.put("/articles/:articleId/unlike", isAuthenticated, (req, res, next) => {
     { new: true }
   )
     .then((updatedArticle) => {
-      console.log(`Article removed from likes.`);
       res.json(updatedArticle);
     })
     .catch((error) => res.status(500).json(error));
