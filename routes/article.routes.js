@@ -92,7 +92,8 @@ router.delete("/articles/:articleId", isAuthenticated, (req, res, next) => {
     .catch((error) => res.json(error));
 });
 
-// LIKES, UNLIKES
+// Code for handling Like / Unlike
+
 router.put('/articles/:articleId/like', isAuthenticated, (req, res) => {
   const { articleId } = req.params;
   Article.findByIdAndUpdate(
