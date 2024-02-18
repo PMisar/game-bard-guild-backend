@@ -21,7 +21,7 @@ module.exports = (app) => {
   // );
   app.use(
     cors({
-      origin: ["https://gamebardguild.netlify.app"], 
+      origin: ["https://gamebardguild.netlify.app"],
       credentials: true,
     })
   );
